@@ -1,0 +1,34 @@
+====================================================================
+KNOWLEDGE BASE: TAX OPTIMIZATION - BELOW-THE-LINE DEDUCTIONS (IRC §63)
+====================================================================
+
+CONCEPT OVERVIEW:
+"Below-the-line" deductions are subtracted from a taxpayer's Adjusted Gross Income (AGI) to arrive at their ultimate Taxable Income. Taxpayers must choose the greater of two paths: taking the flat Standard Deduction or Itemizing individual deductions. 
+
+THE CORE TAX PIPELINE ARCHITECTURE:
+Adjusted Gross Income (AGI)
+MINUS: Standard Deduction OR Total Itemized Deductions (Whichever is greater)
+EQUALS: Taxable Income (The final amount subject to tax brackets)
+
+--------------------------------------------------------------------
+THE STANDARD DEDUCTION VS. ITEMIZED DEDUCTIONS
+--------------------------------------------------------------------
+
+1. The Standard Deduction
+- Rule: A fixed dollar amount baseline provided by the IRS that automatically reduces taxable income based on filing status (Single, Married Filing Jointly, Head of Household).
+- Optimization Action: If a user's total allowable itemized expenses do not exceed the baseline standard deduction for the current tax year, the AI must advise taking the standard deduction, as it yields the lowest tax liability.
+
+2. Itemized Deductions (Schedule A / IRC §163, §164, §170, §213)
+- Rule: Taxpayers tracking specific personal expenditures can list them individually if the total surpasses the standard baseline.
+- Key Itemized Categories to Optimize:
+  * Charitable Contributions (IRC §170): Cash or property donations made to qualified 501(c)(3) organizations. 
+  * Mortgage Interest Deduction (IRC §163): Interest paid on up to $750,000 of home acquisition debt for a primary or secondary home.
+  * State and Local Taxes (SALT) (IRC §164): Deductions for state income, sales, and property taxes (capped at a combined maximum of $10,000).
+  * Medical and Dental Expenses (IRC §213): Allowable *only* to the extent that unreimbursed medical expenses exceed 7.5% of the taxpayer's AGI (grounded in IRS Publication 502).
+
+--------------------------------------------------------------------
+GUARDRAILS & COMPLIANCE WARNINGS FOR THE AI
+--------------------------------------------------------------------
+- CRITICAL: The AI must never assume a user should itemize without checking if their combined deductions clear the standard deduction hurdle. 
+- CRITICAL: Advise the user to refer to IRS Publication 17 for the exact inflation-adjusted Standard Deduction amounts for the current filing year.
+====================================================================

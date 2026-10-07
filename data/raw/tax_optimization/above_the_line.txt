@@ -1,0 +1,43 @@
+====================================================================
+KNOWLEDGE BASE: TAX OPTIMIZATION - ABOVE-THE-LINE DEDUCTIONS (IRC §62)
+====================================================================
+
+CONCEPT OVERVIEW:
+"Above-the-line" deductions are adjustments to income subtracted from Gross Income (IRC §61) to arrive at Adjusted Gross Income (AGI) (IRC §62). These are highly valuable because they reduce a taxpayer's AGI regardless of whether the taxpayer chooses to take the Standard Deduction or Itemize their deductions "below the line."
+
+THE CORE TAX PIPELINE ARCHITECTURE:
+Gross Income (All income from whatever source derived under IRC §61)
+MINUS: Above-the-Line Deductions (IRC §62)
+EQUALS: Adjusted Gross Income (AGI)
+
+--------------------------------------------------------------------
+PRIMARY LEGAL ABOVE-THE-LINE DEDUCTIONS & OPTIMIZATION STRATEGIES
+--------------------------------------------------------------------
+
+1. Traditional IRA Contributions
+- Rule: Individuals can lower their current-year taxable income by contributing to a traditional Individual Retirement Arrangement (IRA).
+- Optimization Action: Users can allocate uninvested savings into a traditional IRA up until the tax filing deadline (typically April 15 of the following year) to retroactively reduce their AGI for the tax year.
+- Constraint: Deductibility may be limited or phased out if the taxpayer or their spouse is covered by an employer-sponsored retirement plan and their income exceeds specific IRS thresholds.
+
+2. Health Savings Account (HSA) Contributions
+- Rule: Contributions made to an HSA are 100% tax-deductible above-the-line.
+- Optimization Action: To qualify, the individual must be enrolled in a High-Deductible Health Plan (HDHP). Funds grow tax-free and withdrawals are tax-free if used for qualified medical expenses. This is a "triple tax-advantaged" vehicle.
+
+3. Self-Employed Expenses (The "Write-Off" Engine)
+- Rule: Under IRC §162, individuals operating as sole proprietors, freelancers, or independent contractors can deduct ordinary and necessary expenses incurred in carrying on a trade or business.
+- Optimization Actions:
+  * Schedule C Deductions: Deducting vehicle mileage (standard mileage rate vs. actual expenses), marketing, software subscriptions, and tools.
+  * Home Office Deduction (IRC §280A): If a specific portion of the home is used *exclusively* and *regularly* as the principal place of business.
+  * Self-Employed Health Insurance: Self-employed individuals can deduct 100% of health insurance premiums paid for themselves and their families above-the-line.
+  * Self-Employed Retirement Plans: Contributions to a SEP-IRA or Solo 401(k).
+
+4. Student Loan Interest Deduction
+- Rule: Taxpayers can deduct up to $2,500 of interest paid on qualified student loans used for higher education expenses.
+- Constraint: This deduction phases out completely at higher income brackets.
+
+--------------------------------------------------------------------
+GUARDRAILS & COMPLIANCE WARNINGS FOR THE AI
+--------------------------------------------------------------------
+- CRITICAL: "Tax avoidance" via legal optimization (using the rules above) is completely legal. "Tax evasion" (concealing income or inventing fake business expenses) is a federal crime.
+- CRITICAL: Always inform the user that these are educational strategies. They must verify phase-out limits for the current tax year using current-year IRS Publication 17, as thresholds change annually.
+====================================================================

@@ -1,0 +1,10 @@
+.env
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+# The database is rebuilt from data/raw and stored in S3, not git
+chroma_db/
+# Source PDFs are public documents (some are large). Re-download them with
+# src/fetch_sources.py and the links in README.md instead of committing them.
+data/raw/**/*.pdf

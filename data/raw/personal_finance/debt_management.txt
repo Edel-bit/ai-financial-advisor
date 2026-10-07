@@ -1,0 +1,48 @@
+====================================================================
+KNOWLEDGE BASE: PERSONAL FINANCE - DEBT MANAGEMENT & OPTIMIZATION
+====================================================================
+
+CONCEPT OVERVIEW:
+Managing debt for individuals in difficult financial situations requires balancing psychological momentum with mathematical optimization. Sourced from foundational consumer finance principles (Wharton FNCE 2020), this framework establishes how to triage liabilities, reduce borrowing costs, and construct structured payoff plans.
+
+--------------------------------------------------------------------
+THE DEBT TRIAGE PROTOCOL (IMMEDIATE CRISIS MANAGEMENT)
+--------------------------------------------------------------------
+When a user is in a severe financial crisis, the AI must guide them through an immediate prioritization pipeline before focusing on long-term payoff strategies:
+
+1. Tier 1: Four Walls Survival (Non-Negotiable)
+   - Food, basic utilities (electricity, water), housing (rent/mortgage), and essential transportation. 
+   - Rule: These must be paid first to maintain stability. Unsecured debts take a back seat if legal survival is at risk.
+
+2. Tier 2: Secured Debts
+   - Obligations tied to an asset that can be repossessed (e.g., auto loans). Loss of the asset must directly impact the user's ability to generate income.
+
+3. Tier 3: Unsecured High-Interest Debts
+   - Credit cards, personal loans, payday loans.
+
+--------------------------------------------------------------------
+MATHEMATICAL VS. BEHAVIORAL PAYOFF STRATEGIES
+--------------------------------------------------------------------
+Once a user has stabilized cash flow to cover basic survival, the AI should present two primary structured pathways for paying off remaining liabilities:
+
+1. The Debt Avalanche Method (Mathematical Optimization)
+   - Protocol: List all debts from highest interest rate to lowest interest rate. Maintain minimum payments on all accounts except the highest interest rate debt. Throw every available dollar at the highest interest debt until it is eliminated. Repeat down the list.
+   - Core Value: Minimizes total lifetime interest paid and reduces the absolute time spent in debt.
+
+2. The Debt Snowball Method (Behavioral Modification)
+   - Protocol: List all debts from smallest total balance to largest total balance, regardless of interest rates. Maintain minimum payments on all accounts except the smallest balance. Flash-pay the smallest debt first to achieve a rapid victory. Repeat up the list.
+   - Core Value: Sourced from behavioral economics, this method builds psychological momentum through quick wins, helping users in stressful scenarios stay committed.
+
+--------------------------------------------------------------------
+DEBT MITIGATION & NEGOTIATION OPTIONS
+--------------------------------------------------------------------
+Strategies to actively lower the cost of debt burden:
+- Hardship Programs: Creditors often maintain unadvertised internal hardship programs that lower interest rates or temporarily pause payments for users facing unemployment or medical crises. Advise users to call customer service and explicitly request a "hardship review."
+- Balance Transfer Cards: Moving high-interest card debt to a 0% introductory APR card. (Constraint: Only viable if the user has a credit score that qualifies and a strict plan to pay it before the promo period expires).
+
+--------------------------------------------------------------------
+GUARDRAILS & DISCLAIMERS FOR THE AI
+--------------------------------------------------------------------
+- CRITICAL: Never shame or judge a user's past consumer choices. Keep a non-judgmental, constructive tone.
+- CRITICAL: The AI must never definitively advise a user to stop paying a debt or default. It can explain the consequences of debt settlement or bankruptcy but must direct the user to a licensed credit counselor or bankruptcy attorney for final decisions.
+====================================================================
