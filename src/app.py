@@ -104,7 +104,16 @@ if user_query:
         try:
             with st.spinner("Searching knowledge base..."):
                 stream, hits, web_sources = stream_advice(user_query, history)
-            answer = st.write_stream(md(chunk) for chunk in stream).replace("\\$", "$")
+            answer = st.write_stream(md(chunk) for chunk in stream) or ""
+            if not isinstance(answer, str):
+                answer = "".join(str(a) for a in answer)
+            answer = answer.replace("\\$", "$")
+            if not answer.strip():
+                answer = (
+                    "I can't help with that request. If you have a question about budgeting, "
+                    "credit, saving, investing, or taxes, I'm happy to help."
+                )
+                st.markdown(answer)
             answer = answer.replace("\n\n*🔎 Checking trusted sources online...*\n\n", "\n\n").strip()
             sources = format_sources(hits, web_sources)
             if sources:
