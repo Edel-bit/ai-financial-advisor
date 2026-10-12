@@ -2,13 +2,19 @@
 import os
 
 import streamlit as st
+import streamlit.components.v1 as components
 
 from advisor import format_sources, stream_advice
 from config import DATA_DIR, S3_BUCKET
 from ingest import ingest_bytes
+from theme import CSS, header_html
 from vectorstore import get_collection, get_embedder
 
 st.set_page_config(page_title="AI Financial Advisor", page_icon="💼", layout="wide")
+st.markdown(CSS, unsafe_allow_html=True)
+
+USER_AVATAR = "🧑"
+BOT_AVATAR = "💠"
 
 
 def md(text: str) -> str:
@@ -68,13 +74,12 @@ with st.sidebar:
     st.caption("Educational guidance only, not personalized financial, tax, or legal advice.")
 
 # --- CHAT ------------------------------------------------------------------
-st.title("💼 AI Financial Advisor")
-st.caption("Ask about budgeting, debt, saving, investing basics, retirement accounts, or U.S. taxes.")
+components.html(header_html(get_collection().count()), height=210)
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-if not st.session_state.messages:
+if not st.session_state.messages and "pending" not in st.session_state:
     examples = [
         "I have $8k in credit card debt at 24% and $3k saved. What should I do first?",
         "Roth IRA or traditional 401(k) — which should I prioritize?",
@@ -87,7 +92,7 @@ if not st.session_state.messages:
             st.rerun()
 
 for m in st.session_state.messages:
-    with st.chat_message(m["role"]):
+    with st.chat_message(m["role"], avatar=USER_AVATAR if m["role"] == "user" else BOT_AVATAR):
         st.markdown(md(m["content"]))
         if m.get("sources"):
             with st.expander("Sources"):
@@ -97,10 +102,10 @@ user_query = st.chat_input("Ask a financial question...") or st.session_state.po
 if user_query:
     history = [{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
     st.session_state.messages.append({"role": "user", "content": user_query})
-    with st.chat_message("user"):
+    with st.chat_message("user", avatar=USER_AVATAR):
         st.markdown(md(user_query))
 
-    with st.chat_message("assistant"):
+    with st.chat_message("assistant", avatar=BOT_AVATAR):
         try:
             with st.spinner("Searching knowledge base..."):
                 stream, hits, web_sources = stream_advice(user_query, history)

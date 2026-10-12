@@ -10,6 +10,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN python -c "from chromadb.utils.embedding_functions import ONNXMiniLM_L6_V2 as E; E()(['warm up'])"
 
 COPY src/ src/
+COPY .streamlit/ .streamlit/
 COPY start.sh .
 RUN chmod +x start.sh
 

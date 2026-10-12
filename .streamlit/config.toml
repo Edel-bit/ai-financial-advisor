@@ -1,0 +1,15 @@
+# Navy + light-blue theme. Streamlit reads this automatically when you run
+# `streamlit run src/app.py` from the project root.
+[theme]
+base = "dark"
+primaryColor = "#4FC3F7"
+backgroundColor = "#0A1A33"
+secondaryBackgroundColor = "#12294D"
+textColor = "#E6F0FF"
+font = "sans serif"
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false
