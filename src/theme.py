@@ -1,117 +1,120 @@
-"""Look and feel: navy / light-blue styling and the animated header (anime.js)."""
+"""Look and feel.
+
+Type system (two families, clearly distinct):
+  - Newsreader (serif): headings, the app title and the greeting.
+  - Public Sans: everything else. It's the U.S. government's own typeface
+    (USWDS), a quiet nod to the IRS/FDIC/SEC/SSA sources the app is built on.
+Motion: one moment only, the header chart drawing in on load.
+"""
 from functools import lru_cache
 from pathlib import Path
 
 STATIC = Path(__file__).parent / "static"
 
-NAVY = "#0A1A33"
-NAVY_2 = "#12294D"
-SKY = "#4FC3F7"
-ICE = "#9ED8FF"
+NAVY = "#0A1A33"      # page
+NAVY_2 = "#12294D"    # cards, inputs
+LINE = "#24406E"      # borders
+SKY = "#4FC3F7"       # accent (links, focus, chart)
+ICE = "#9ED8FF"       # secondary accent (headings)
+TEXT = "#E6F0FF"
+MUTED = "#A9BEDC"
+
+FONTS_URL = (
+    "https://fonts.googleapis.com/css2?"
+    "family=Newsreader:opsz,wght@6..72,500;6..72,600"
+    "&family=Public+Sans:wght@400;500;600;700&display=swap"
+)
+SERIF = "'Newsreader', Georgia, 'Times New Roman', serif"
+SANS = "'Public Sans', -apple-system, 'Segoe UI', system-ui, sans-serif"
 
 CSS = f"""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('{FONTS_URL}');
 
-html, body, .stApp, .stMarkdown, p, li, h1, h2, h3, h4, label, input, textarea,
-.stButton > button, [data-testid="stMetricValue"], [data-testid="stMetricLabel"] {{
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+/* ---- Type ------------------------------------------------------------ */
+html, body, .stApp, .stMarkdown, p, li, td, th, label, input, textarea,
+.stButton > button, [data-testid="stMetricLabel"], [data-testid="stCaptionContainer"] {{
+  font-family: {SANS};
 }}
+.stMarkdown p, .stMarkdown li {{ font-size: 1rem; line-height: 1.65; }}
+.stMarkdown, .stMarkdown p {{ max-width: 72ch; }}
+
+h1, h2, h3, h4,
+[data-testid="stHeading"] *, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4 {{
+  font-family: {SERIF} !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.005em;
+  color: {ICE};
+}}
+.stMarkdown h1 {{ font-size: 1.75rem !important; }}
+.stMarkdown h2 {{ font-size: 1.45rem !important; margin-top: 1.4rem; }}
+.stMarkdown h3 {{ font-size: 1.2rem !important; margin-top: 1.1rem; }}
+.stMarkdown strong {{ color: #FFFFFF; font-weight: 600; }}
+.stMarkdown a {{ color: {SKY}; text-underline-offset: 3px; }}
+
+[data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p {{
+  font-size: .82rem !important; line-height: 1.5; color: {MUTED};
+}}
+
 /* Keep Streamlit's icons on their icon font */
 [data-testid="stIconMaterial"], [data-testid="stExpanderIcon"] {{
   font-family: 'Material Symbols Rounded' !important;
 }}
 
-/* Page background: deep navy with soft blue glows */
-[data-testid="stAppViewContainer"] {{
-  background:
-    radial-gradient(900px 500px at 85% -10%, rgba(79,195,247,0.16), transparent 60%),
-    radial-gradient(700px 400px at -10% 110%, rgba(30,90,180,0.25), transparent 60%),
-    {NAVY};
-}}
+/* ---- Surfaces -------------------------------------------------------- */
+[data-testid="stAppViewContainer"] {{ background: {NAVY}; }}
 [data-testid="stHeader"] {{ background: transparent; }}
-.block-container {{ padding-top: 1.2rem; max-width: 1100px; }}
+.block-container {{ padding-top: 1.2rem; max-width: 980px; }}
 
-/* Sidebar */
-[data-testid="stSidebar"] {{
-  background: linear-gradient(180deg, #081428 0%, #0F2547 100%);
-  border-right: 1px solid rgba(79,195,247,0.18);
-}}
-[data-testid="stSidebar"] h2 {{ color: {ICE}; letter-spacing: .02em; }}
+[data-testid="stSidebar"] {{ background: #081530; border-right: 1px solid {LINE}; }}
+[data-testid="stSidebar"] h2 {{ font-size: 1.3rem !important; }}
 [data-testid="stMetric"] {{
-  background: rgba(79,195,247,0.08);
-  border: 1px solid rgba(79,195,247,0.25);
-  border-radius: 14px; padding: 12px 16px;
+  border: 1px solid {LINE}; border-radius: 10px; padding: 12px 14px; background: {NAVY_2};
 }}
-[data-testid="stMetricValue"] {{ color: {SKY}; font-weight: 800; }}
+[data-testid="stMetricValue"] {{
+  font-family: {SANS}; font-weight: 600; color: {TEXT};
+  font-variant-numeric: tabular-nums;
+}}
 
-/* Buttons (example questions, new conversation) */
+/* ---- Buttons --------------------------------------------------------- */
 .stButton > button {{
-  background: rgba(18,41,77,0.85);
-  color: #D9ECFF;
-  border: 1px solid rgba(79,195,247,0.35);
-  border-radius: 999px;
-  padding: .55rem 1rem;
-  transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+  background: transparent; color: {TEXT};
+  border: 1px solid {LINE}; border-radius: 8px;
+  font-weight: 500; font-size: .92rem; padding: .6rem .9rem; text-align: left;
+  transition: border-color .15s ease, background .15s ease;
 }}
-.stButton > button:hover {{
-  border-color: {SKY};
-  background: rgba(79,195,247,0.14);
-  color: #FFFFFF;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(79,195,247,0.25);
-}}
+.stButton > button:hover {{ border-color: {SKY}; background: rgba(79,195,247,0.08); color: #FFFFFF; }}
+.stButton > button:focus-visible {{ outline: 2px solid {SKY}; outline-offset: 2px; }}
 
-/* Chat messages as cards */
+/* ---- Chat ------------------------------------------------------------ */
 [data-testid="stChatMessage"] {{
-  background: rgba(18,41,77,0.72);
-  border: 1px solid rgba(79,195,247,0.16);
-  border-radius: 18px;
-  padding: 1rem 1.2rem;
-  margin-bottom: .9rem;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  animation: rise .45s cubic-bezier(.2,.8,.2,1) both;
+  background: transparent; border: 0; border-radius: 0;
+  padding: 1.1rem 0; margin: 0; border-bottom: 1px solid rgba(36,64,110,0.6);
 }}
-[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {{
-  background: linear-gradient(135deg, rgba(79,195,247,0.20), rgba(30,90,180,0.22));
-  border-color: rgba(79,195,247,0.40);
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) .stMarkdown p {{
+  font-weight: 500; color: #FFFFFF;
 }}
-[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) {{
-  border-left: 3px solid {SKY};
-}}
-[data-testid="stChatMessage"] h1, [data-testid="stChatMessage"] h2,
-[data-testid="stChatMessage"] h3 {{ color: {ICE}; }}
-[data-testid="stChatMessage"] strong {{ color: #FFFFFF; }}
-[data-testid="stChatMessage"] a {{ color: {SKY}; }}
-[data-testid="stChatMessage"] table {{ border-radius: 10px; overflow: hidden; }}
-[data-testid="stChatMessage"] th {{ background: rgba(79,195,247,0.15); color: {ICE}; }}
+[data-testid="stChatMessage"] table {{ border-collapse: collapse; font-variant-numeric: tabular-nums; }}
+[data-testid="stChatMessage"] th {{ background: {NAVY_2}; color: {ICE}; font-weight: 600; }}
+[data-testid="stChatMessage"] th, [data-testid="stChatMessage"] td {{ border: 1px solid {LINE}; }}
 
-@keyframes rise {{ from {{ opacity: 0; transform: translateY(12px); }} to {{ opacity: 1; transform: none; }} }}
-
-/* Sources expander */
 [data-testid="stExpander"] {{
-  border: 1px solid rgba(79,195,247,0.22) !important;
-  border-radius: 12px !important;
-  background: rgba(8,20,40,0.55);
+  border: 1px solid {LINE} !important; border-radius: 8px !important; background: transparent;
 }}
-[data-testid="stExpander"] summary {{ color: {ICE}; }}
+[data-testid="stExpander"] summary p {{ font-size: .9rem; color: {MUTED}; }}
 
-/* Chat input */
+/* ---- Input ----------------------------------------------------------- */
+[data-testid="stBottom"] > div {{ background: {NAVY}; }}
 [data-testid="stChatInput"] {{
-  border: 1px solid rgba(79,195,247,0.45) !important;
-  border-radius: 16px !important;
-  background: rgba(18,41,77,0.9) !important;
-  box-shadow: 0 0 0 4px rgba(79,195,247,0.06);
+  border: 1px solid {LINE} !important; border-radius: 12px !important; background: {NAVY_2} !important;
 }}
-[data-testid="stChatInput"]:focus-within {{
-  border-color: {SKY} !important;
-  box-shadow: 0 0 0 4px rgba(79,195,247,0.18);
+[data-testid="stChatInput"]:focus-within {{ border-color: {SKY} !important; }}
+[data-testid="stChatInput"] textarea {{
+  min-height: 64px !important; font-size: 1.02rem !important;
+  padding: 1.1rem 1rem !important; line-height: 1.5 !important;
 }}
-[data-testid="stBottom"] > div {{ background: transparent; }}
 
-/* Scrollbar */
-::-webkit-scrollbar {{ width: 10px; }}
-::-webkit-scrollbar-thumb {{ background: rgba(79,195,247,0.25); border-radius: 10px; }}
+@media (prefers-reduced-motion: reduce) {{ * {{ transition: none !important; }} }}
 </style>
 """
 
@@ -123,82 +126,82 @@ def _anime_js() -> str:
 
 
 def header_html(passages: int) -> str:
-    """Animated hero banner. Runs inside a Streamlit component iframe."""
-    chips = [f"{passages:,} passages", "IRS", "FDIC", "SEC", "SSA", "Live .gov search"]
-    chip_html = "".join(f'<span class="chip">{c}</span>' for c in chips)
-    title = "AI Financial Advisor"
-    letters = "".join(
-        f'<span class="ch">{"&nbsp;" if c == " " else c}</span>' for c in title
-    )
+    """Header with a line chart that draws itself once on load (anime.js)."""
     return f"""
 <!doctype html><html><head><meta charset="utf-8">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<link href="{FONTS_URL}" rel="stylesheet">
 <style>
   * {{ box-sizing: border-box; margin: 0; }}
-  body {{ background: transparent; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; overflow: hidden; }}
+  body {{ background: transparent; font-family: {SANS}; overflow: hidden; padding: 2px; }}
   .hero {{
-    position: relative; height: 196px; border-radius: 22px; overflow: hidden;
-    padding: 28px 34px;
-    background: linear-gradient(120deg, #0B2147 0%, #12336A 55%, #1A4C8F 100%);
-    border: 1px solid rgba(79,195,247,0.30);
-    box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+    position: relative; min-height: 176px; overflow: hidden;
+    padding: 30px 34px; border-radius: 14px;
+    background: {NAVY_2}; border: 1px solid {LINE};
   }}
-  .orb {{ position: absolute; border-radius: 50%; filter: blur(30px); opacity: .55; }}
-  .o1 {{ width: 220px; height: 220px; background: #4FC3F7; right: -40px; top: -80px; }}
-  .o2 {{ width: 160px; height: 160px; background: #2F6FD6; right: 220px; bottom: -90px; }}
-  svg.chart {{ position: absolute; right: 26px; bottom: 18px; width: 46%; height: 120px; }}
-  .content {{ position: relative; z-index: 2; }}
-  .eyebrow {{ color: #9ED8FF; font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }}
-  h1 {{ color: #FFFFFF; font-size: 36px; font-weight: 800; margin: 6px 0 6px; letter-spacing: -.01em; }}
-  .ch {{ display: inline-block; }}
-  .sub {{ color: #C9E3FF; font-size: 15px; max-width: 520px; }}
-  .chips {{ margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }}
-  .chip {{
-    color: #E6F4FF; font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 999px;
-    background: rgba(79,195,247,0.16); border: 1px solid rgba(158,216,255,0.40);
-  }}
-  @media (max-width: 760px) {{ svg.chart {{ opacity: .35; width: 80%; }} h1 {{ font-size: 28px; }} }}
+  svg.chart {{ position: absolute; right: 0; bottom: 0; width: 52%; height: 100%; }}
+  .content {{ position: relative; z-index: 2; max-width: 30rem; }}
+  h1 {{ font-family: {SERIF}; font-weight: 600; font-size: 40px; line-height: 1.05; color: #FFFFFF; letter-spacing: -0.01em; }}
+  .sub {{ margin-top: 12px; color: {MUTED}; font-size: 15px; line-height: 1.55; }}
+  .sub b {{ color: {TEXT}; font-weight: 600; font-variant-numeric: tabular-nums; }}
+  @media (max-width: 760px) {{ svg.chart {{ opacity: .3; width: 90%; }} h1 {{ font-size: 32px; }} }}
+  @media (max-width: 480px) {{ .hero {{ padding: 22px; }} h1 {{ font-size: 27px; }} .sub {{ font-size: 14px; }} }}
 </style></head>
 <body>
 <div class="hero">
-  <div class="orb o1"></div><div class="orb o2"></div>
-  <svg class="chart" viewBox="0 0 400 120" preserveAspectRatio="none">
+  <svg class="chart" viewBox="0 0 400 176" preserveAspectRatio="none" aria-hidden="true">
     <defs>
-      <linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#9ED8FF" stop-opacity=".2"/><stop offset="1" stop-color="#4FC3F7"/></linearGradient>
-      <linearGradient id="fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#4FC3F7" stop-opacity=".25"/><stop offset="1" stop-color="#4FC3F7" stop-opacity="0"/></linearGradient>
+      <linearGradient id="fill" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stop-color="{SKY}" stop-opacity=".18"/><stop offset="1" stop-color="{SKY}" stop-opacity="0"/>
+      </linearGradient>
     </defs>
-    <path class="area" d="M0,105 C40,98 60,92 90,90 C130,86 150,70 185,72 C220,74 240,52 275,48 C310,44 335,30 360,22 L400,10 L400,120 L0,120 Z" fill="url(#fill)"/>
-    <path class="line" d="M0,105 C40,98 60,92 90,90 C130,86 150,70 185,72 C220,74 240,52 275,48 C310,44 335,30 360,22 L400,10"
-          fill="none" stroke="url(#g)" stroke-width="3.5" stroke-linecap="round"/>
-    <circle class="dot" cx="90" cy="90" r="4" fill="#9ED8FF"/>
-    <circle class="dot" cx="185" cy="72" r="4" fill="#9ED8FF"/>
-    <circle class="dot" cx="275" cy="48" r="4" fill="#9ED8FF"/>
-    <circle class="dot" cx="400" cy="10" r="5" fill="#4FC3F7"/>
+    <g stroke="{LINE}" stroke-width="1">
+      <line x1="0" y1="44" x2="400" y2="44"/><line x1="0" y1="88" x2="400" y2="88"/><line x1="0" y1="132" x2="400" y2="132"/>
+    </g>
+    <path class="area" d="M0,150 C50,146 80,138 120,132 C165,125 190,112 230,108 C270,104 300,80 335,70 C360,62 380,48 400,36 L400,176 L0,176 Z" fill="url(#fill)"/>
+    <path class="line" d="M0,150 C50,146 80,138 120,132 C165,125 190,112 230,108 C270,104 300,80 335,70 C360,62 380,48 400,36"
+          fill="none" stroke="{SKY}" stroke-width="2.5" stroke-linecap="round"/>
   </svg>
   <div class="content">
-    <div class="eyebrow">Personal finance · Taxes · Investing</div>
-    <h1>{letters}</h1>
-    <div class="sub">Cited answers from official IRS, FDIC, SEC and SSA publications, with this year's numbers checked online.</div>
-    <div class="chips">{chip_html}</div>
+    <h1>AI Financial Advisor</h1>
+    <p class="sub">Answers grounded in <b>{passages:,}</b> passages from IRS, FDIC, SEC and Social Security publications, with this year's limits checked online.</p>
   </div>
 </div>
 <script>{_anime_js()}</script>
 <script>
-  // Everything is visible by default; animations only run if anime.js loaded.
-  if (window.anime) {{
-    const {{ animate, stagger, createTimeline, svg }} = anime;
-    createTimeline({{ defaults: {{ ease: 'outExpo' }} }})
-      .add('.eyebrow', {{ opacity: {{ from: 0 }}, y: {{ from: -10 }}, duration: 600 }})
-      .add('.ch', {{ opacity: {{ from: 0 }}, y: {{ from: 28 }}, rotate: {{ from: 8 }}, delay: stagger(28), duration: 900 }}, '-=350')
-      .add('.sub', {{ opacity: {{ from: 0 }}, y: {{ from: 12 }}, duration: 700 }}, '-=600')
-      .add('.chip', {{ opacity: {{ from: 0 }}, scale: {{ from: .8 }}, delay: stagger(70), duration: 600, ease: 'outBack' }}, '-=450')
-      .add(svg.createDrawable('.line'), {{ draw: ['0 0', '0 1'], duration: 1600, ease: 'inOutSine' }}, 200)
-      .add('.area', {{ opacity: {{ from: 0 }}, duration: 900 }}, '-=900')
-      .add('.dot', {{ scale: {{ from: 0 }}, delay: stagger(140), duration: 500, ease: 'outBack' }}, '-=700');
-    animate('.o1', {{ x: -30, y: 20, duration: 6000, alternate: true, loop: true, ease: 'inOutSine' }});
-    animate('.o2', {{ x: 40, y: -15, duration: 7000, alternate: true, loop: true, ease: 'inOutSine' }});
-    animate('.dot:last-of-type', {{ scale: [1, 1.6], opacity: [1, .5], duration: 1100, alternate: true, loop: true, delay: 2200, ease: 'inOutSine' }});
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (window.anime && !reduce) {{
+    const {{ createTimeline, svg }} = anime;
+    createTimeline()
+      .add(svg.createDrawable('.line'), {{ draw: ['0 0', '0 1'], duration: 1800, ease: 'inOutQuad' }}, 150)
+      .add('.area', {{ opacity: {{ from: 0 }}, duration: 900, ease: 'outQuad' }}, 900);
   }}
+</script>
+</body></html>
+"""
+
+
+def greeting_html() -> str:
+    """Time-of-day greeting before the first question. Uses the viewer's local
+    clock (a server on AWS would be in UTC)."""
+    return f"""
+<!doctype html><html><head><meta charset="utf-8">
+<link href="{FONTS_URL}" rel="stylesheet">
+<style>
+  * {{ box-sizing: border-box; margin: 0; }}
+  body {{ background: transparent; overflow: hidden; height: 100vh;
+         display: flex; flex-direction: column; justify-content: center; padding: 0 2px; }}
+  h2 {{ font-family: {SERIF}; font-weight: 500; font-size: 34px; color: #FFFFFF; letter-spacing: -0.01em; }}
+  p {{ font-family: {SANS}; color: {MUTED}; font-size: 16px; margin-top: 8px; }}
+  @media (max-width: 480px) {{ h2 {{ font-size: 27px; }} p {{ font-size: 15px; }} }}
+</style></head>
+<body>
+  <h2 id="hello">Hello.</h2>
+  <p>Ask about budgeting, debt, saving, investing, retirement accounts or U.S. taxes.</p>
+<script>
+  const h = new Date().getHours();
+  document.getElementById('hello').textContent =
+    h < 5 ? 'Working late? How can I help?' : h < 12 ? 'Good morning. How can I help?'
+    : h < 17 ? 'Good afternoon. How can I help?' : 'Good evening. How can I help?';
 </script>
 </body></html>
 """

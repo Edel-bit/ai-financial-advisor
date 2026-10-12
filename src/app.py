@@ -7,14 +7,14 @@ import streamlit.components.v1 as components
 from advisor import format_sources, stream_advice
 from config import DATA_DIR, S3_BUCKET
 from ingest import ingest_bytes
-from theme import CSS, header_html
+from theme import CSS, greeting_html, header_html
 from vectorstore import get_collection, get_embedder
 
-st.set_page_config(page_title="AI Financial Advisor", page_icon="💼", layout="wide")
+st.set_page_config(page_title="AI Financial Advisor", page_icon=":material/account_balance:", layout="wide")
 st.markdown(CSS, unsafe_allow_html=True)
 
-USER_AVATAR = "🧑"
-BOT_AVATAR = "💠"
+USER_AVATAR = ":material/person:"
+BOT_AVATAR = ":material/account_balance:"
 
 
 def md(text: str) -> str:
@@ -32,7 +32,7 @@ warm_up()
 
 # --- SIDEBAR ---------------------------------------------------------------
 with st.sidebar:
-    st.header("📚 Knowledge base")
+    st.header("Knowledge base")
     st.metric("Passages indexed", f"{get_collection().count():,}")
 
     # When deployed publicly, only someone with the admin password can add documents.
@@ -65,16 +65,16 @@ with st.sidebar:
 
                     upload_file(DATA_DIR / source, f"data/raw/{source}")
             st.session_state[key] = True
-            st.success(f"✅ {f.name}: {n} passages added")
+            st.success(f"Added {n} passages from {f.name}")
 
     st.divider()
-    if st.button("🧹 New conversation"):
+    if st.button("New conversation", use_container_width=True):
         st.session_state.messages = []
         st.rerun()
     st.caption("Educational guidance only, not personalized financial, tax, or legal advice.")
 
 # --- CHAT ------------------------------------------------------------------
-components.html(header_html(get_collection().count()), height=210)
+components.html(header_html(get_collection().count()), height=184)
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -85,6 +85,7 @@ if not st.session_state.messages and "pending" not in st.session_state:
         "Roth IRA or traditional 401(k) — which should I prioritize?",
         "What can I deduct as a freelancer?",
     ]
+    components.html(greeting_html(), height=130)
     cols = st.columns(len(examples))
     for col, ex in zip(cols, examples):
         if col.button(md(ex), use_container_width=True):
