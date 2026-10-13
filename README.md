@@ -18,6 +18,8 @@ A chat assistant that answers personal-finance and U.S. tax questions with **cit
 - **Upload your own documents.** PDFs and text files can be added from the sidebar (protected by an admin password when deployed).
 - **Streaming chat UI.** Built with Streamlit; answers stream in as they're written.
 
+**Tested:** 31/31 correct on questions with known answers and 15/15 refusals on adversarial prompts. See the [evaluation](eval/) for methods, results and screenshots.
+
 ## How it works
 
 ```mermaid
