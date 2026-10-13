@@ -2,7 +2,6 @@
 import os
 
 import streamlit as st
-import streamlit.components.v1 as components
 
 from advisor import format_sources, stream_advice
 from config import DATA_DIR, S3_BUCKET
@@ -74,7 +73,7 @@ with st.sidebar:
     st.caption("Educational guidance only, not personalized financial, tax, or legal advice.")
 
 # --- CHAT ------------------------------------------------------------------
-components.html(header_html(get_collection().count()), height=250)
+st.iframe(header_html(get_collection().count()), height=250)
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -85,7 +84,7 @@ if not st.session_state.messages and "pending" not in st.session_state:
         "Roth IRA or traditional 401(k) — which should I prioritize?",
         "What can I deduct as a freelancer?",
     ]
-    components.html(greeting_html(), height=190)
+    st.iframe(greeting_html(), height=190)
     cols = st.columns(len(examples))
     for col, ex in zip(cols, examples):
         if col.button(md(ex), use_container_width=True):
