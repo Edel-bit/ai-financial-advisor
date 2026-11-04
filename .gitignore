@@ -8,3 +8,6 @@ chroma_db/
 # Source PDFs are public documents (some are large). Re-download them with
 # src/fetch_sources.py and the links in README.md instead of committing them.
 data/raw/**/*.pdf
+.streamlit/secrets.toml
+*.pem
+*.key

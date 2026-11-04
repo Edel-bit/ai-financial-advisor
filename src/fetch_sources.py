@@ -11,6 +11,7 @@ always point at the CURRENT revision, so re-run this each January (with
 Other high-quality sources that must be downloaded by hand are listed in
 README.md ("Building the knowledge base").
 """
+
 import argparse
 import time
 import urllib.request
@@ -50,8 +51,10 @@ SOURCES = {
 
 
 def download(url, dest):
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (ai-financial-advisor)"})
-    with urllib.request.urlopen(req, timeout=60) as r:
+    if not url.startswith("https://"):
+        raise ValueError(f"Refusing non-HTTPS URL: {url}")
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (ai-financial-advisor)"})  # noqa: S310 (https checked above)
+    with urllib.request.urlopen(req, timeout=60) as r:  # noqa: S310
         data = r.read()
     if not data.startswith(b"%PDF"):
         raise ValueError("response was not a PDF")
@@ -75,7 +78,7 @@ def main():
                 continue
             try:
                 size = download(IRS + name, dest)
-                print(f"  ✓ {name:10s} {size/1e6:5.1f} MB  {title}")
+                print(f"  ✓ {name:10s} {size / 1e6:5.1f} MB  {title}")
             except Exception as e:  # IRS occasionally retires or renames a publication
                 print(f"  ✗ {name:10s} failed ({e})")
             time.sleep(0.5)  # be polite to irs.gov

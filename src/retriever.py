@@ -1,4 +1,5 @@
 """Find the knowledge-base passages most relevant to a question."""
+
 import os
 
 from config import N_RESULTS
@@ -21,12 +22,17 @@ def retrieve(query: str, n_results: int = N_RESULTS):
     )
     hits = []
     for text, meta, dist in zip(
-        results["documents"][0], results["metadatas"][0], results["distances"][0]
+        results["documents"][0], results["metadatas"][0], results["distances"][0], strict=True
     ):
         if dist > MAX_DISTANCE:
             continue
         hits.append(
-            {"text": text, "source": meta.get("source", "unknown"), "page": meta.get("page"), "distance": dist}
+            {
+                "text": text,
+                "source": meta.get("source", "unknown"),
+                "page": meta.get("page"),
+                "distance": dist,
+            }
         )
     return hits
 

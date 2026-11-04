@@ -1,5 +1,9 @@
 """Streamlit web app.  Run from the project root:  streamlit run src/app.py"""
+
+import hmac
+import logging
 import os
+from pathlib import Path
 
 import streamlit as st
 
@@ -35,8 +39,13 @@ with st.sidebar:
     st.metric("Passages indexed", f"{get_collection().count():,}")
 
     # When deployed publicly, only someone with the admin password can add documents.
+    # Fail closed: on a deployed server (S3_BUCKET set) uploads stay off unless ADMIN_PASSWORD is set.
     admin_pw = os.getenv("ADMIN_PASSWORD", "")
-    can_upload = not admin_pw or st.text_input("Admin password to add documents", type="password") == admin_pw
+    if admin_pw:
+        entered = st.text_input("Admin password to add documents", type="password")
+        can_upload = bool(entered) and hmac.compare_digest(entered.encode(), admin_pw.encode())
+    else:
+        can_upload = not S3_BUCKET
 
     if can_upload:
         uploaded_files = st.file_uploader(
@@ -50,11 +59,12 @@ with st.sidebar:
                 continue
             with st.spinner(f"Ingesting {f.name}..."):
                 data = f.getvalue()
-                source = f"uploads/{f.name}"
+                source = f"uploads/{Path(f.name).name}"  # strip any folder parts from the filename
                 try:
                     n = ingest_bytes(data, source=source, category="uploads", force=True)
-                except Exception as e:
-                    st.error(f"Could not read {f.name}: {e}")
+                except Exception:
+                    logging.exception("Ingest failed for %s", f.name)
+                    st.error(f"Could not read {f.name}. Make sure it's a valid PDF or text file.")
                     continue
                 # keep a copy so the file survives a rebuild (and goes to S3 if configured)
                 (DATA_DIR / "uploads").mkdir(parents=True, exist_ok=True)
@@ -86,7 +96,7 @@ if not st.session_state.messages and "pending" not in st.session_state:
     ]
     st.iframe(greeting_html(), height=190)
     cols = st.columns(len(examples))
-    for col, ex in zip(cols, examples):
+    for col, ex in zip(cols, examples, strict=True):
         if col.button(md(ex), use_container_width=True):
             st.session_state.pending = ex
             st.rerun()
@@ -125,6 +135,7 @@ if user_query:
                 with st.expander("Sources"):
                     st.text(sources)
             st.session_state.messages.append({"role": "assistant", "content": answer, "sources": sources})
-        except Exception as e:
+        except Exception:
             st.session_state.messages.pop()  # don't keep a question with no answer
-            st.error(f"Something went wrong: {e}")
+            logging.exception("Answer failed")  # full details go to the server log, not the user
+            st.error("Something went wrong while answering. Please try again in a moment.")

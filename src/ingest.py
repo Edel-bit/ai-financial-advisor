@@ -9,9 +9,11 @@ Supports .pdf, .txt and .md. The first folder under data/raw/ becomes the
 document's "category" (e.g. tax_optimization, personal_finance), and PDF chunks
 keep their page number so answers can cite "p17.pdf, page 42".
 """
+
 import argparse
 import hashlib
 import io
+import logging
 import re
 import sys
 from pathlib import Path
@@ -22,7 +24,6 @@ from pypdf import PdfReader
 from config import CHUNK_OVERLAP, CHUNK_SIZE, DATA_DIR
 from vectorstore import embed, get_collection, reset_collection
 
-import logging
 logging.getLogger("pypdf").setLevel(logging.ERROR)  # hide harmless font warnings
 
 SUPPORTED = {".pdf", ".txt", ".md"}
@@ -77,7 +78,7 @@ def ingest_bytes(data: bytes, source: str, category: str = "uploaded", force: bo
         if len(text) < 50:  # skip blank/cover pages
             continue
         for j, chunk in enumerate(splitter.split_text(text)):
-            uid = hashlib.sha1(f"{source}|{page}|{j}".encode()).hexdigest()
+            uid = hashlib.sha1(f"{source}|{page}|{j}".encode(), usedforsecurity=False).hexdigest()
             ids.append(uid)
             docs.append(chunk)
             meta = {"source": source, "category": category}
@@ -104,7 +105,9 @@ def ingest_path(path: Path, force: bool = False) -> int:
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     parser.add_argument("--reset", action="store_true", help="delete the database and rebuild")
     parser.add_argument("--force", action="store_true", help="re-ingest files already loaded")
     args = parser.parse_args()

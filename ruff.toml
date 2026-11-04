@@ -1,0 +1,15 @@
+# Ruff: linter + formatter. Run `ruff check .` and `ruff format .`
+line-length = 110
+target-version = "py312"
+extend-exclude = ["venv", ".venv", "data", "chroma_db"]
+
+[lint]
+# E/F = errors & bugs, I = import sorting, B = likely bugs, UP = modern syntax, S = security checks
+select = ["E", "F", "I", "B", "UP", "S"]
+ignore = [
+  "E501",   # long lines are handled by the formatter
+  "S101",   # allow assert (used in tests)
+]
+
+[lint.per-file-ignores]
+"tests/*" = ["S"]

@@ -1,0 +1,5 @@
+# Dev tools (not needed to run the app):  pip install -r requirements-dev.txt
+pytest
+ruff
+pre-commit
+pip-audit

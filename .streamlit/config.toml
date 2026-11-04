@@ -11,3 +11,7 @@ font = "sans serif"
 
 [browser]
 gatherUsageStats = false
+
+[server]
+# Limit uploads to 25 MB (Streamlit default is 200 MB)
+maxUploadSize = 25

@@ -1,4 +1,5 @@
 """Shared ChromaDB connection + embedding model (ONNX version of all-MiniLM-L6-v2, no PyTorch)."""
+
 from functools import lru_cache
 
 import chromadb
@@ -29,7 +30,7 @@ def reset_collection():
     client = chromadb.PersistentClient(path=str(CHROMA_DIR))
     try:
         client.delete_collection(COLLECTION_NAME)
-    except Exception:
+    except Exception:  # noqa: S110 - collection may not exist yet; nothing to delete
         pass
     get_collection.cache_clear()
     return get_collection()
